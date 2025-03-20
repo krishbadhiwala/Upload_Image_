@@ -114,7 +114,20 @@ dotnet add package Microsoft.EntityFrameworkCore.Tools
    
 9. Now, you can run the project.
 
+
+
+## Note
+
+Repository & Service Pattern
+
+Repository ```(ProductRepository.cs)```
+
+- Handles data access logic.
+  
+Service ```(FileService.cs)```
+
+- Contains File Save And Delete logic and calls the repository.
+
 ---
 
 Thank you for ⭐ and supporting this project! 😅
-
