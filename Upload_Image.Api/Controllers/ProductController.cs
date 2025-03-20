@@ -4,6 +4,7 @@ using Image_manupulation.Data.Repository;
 using Image_manupulation.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Image_Manupulation.API.Controllers
 {
@@ -82,6 +83,40 @@ namespace Image_Manupulation.API.Controllers
             }
         }
 
+
+        [HttpDelete]
+        [Route("id")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            try
+            {
+                var product = await _productRepo.GetProductById(id);
+                var imageUrl = product?.ProductImage;
+
+                if (product == null)
+                {
+                    return NotFound("Product not found");
+                }
+
+                var deletedProduct = await _productRepo.DeleteProduct(product);
+                if (!string.IsNullOrEmpty(imageUrl))
+                {
+                    string fileName = Path.GetFileName(new Uri(imageUrl).LocalPath);
+
+
+                    _fileService.DeleteFile(fileName);
+                }
+
+                
+
+                return Ok(deletedProduct);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
 
 

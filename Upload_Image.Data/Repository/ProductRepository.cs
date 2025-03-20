@@ -22,10 +22,16 @@ namespace Image_manupulation.Data.Repository
             return dbcontext.Products.ToList();
         }
 
-        //public async Task<Product> GetProductById(int id)
-        //{
-        //    return dbcontext.Products.Find(id);
-        //}
+        public async Task<Product> GetProductById(int id)
+        {
+            return dbcontext.Products.Find(id);
+        }
+        public async Task<Product> DeleteProduct(Product product)
+        {
+            dbcontext.Products.Remove(product);
+            await dbcontext.SaveChangesAsync();
+            return product;
+        }
 
         public async Task<Product> AddProduct(Product product)
         {
