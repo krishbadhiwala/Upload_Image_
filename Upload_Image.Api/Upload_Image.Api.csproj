@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Upload_Image.Data\Upload_Image.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
