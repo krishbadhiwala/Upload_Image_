@@ -46,21 +46,5 @@ namespace Image_manupulation.Data.Repository
             await dbcontext.SaveChangesAsync();
             return product;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

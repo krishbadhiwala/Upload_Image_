@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Image_manupulation.Data.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -10,17 +12,21 @@ namespace Image_manupulation.Data.Services
     public class FileService
     {
         private readonly IWebHostEnvironment environment;
-        public FileService(IWebHostEnvironment _environment)
+        private readonly ApplicationDbcontext context;
+
+        public FileService(IWebHostEnvironment _environment, ApplicationDbcontext applicationdbcontext)
         {
             this.environment = _environment;
+            this.context= applicationdbcontext;
         }
-
+        
         public async Task<string> SaveFileAsync(IFormFile imageFile, string[] allowedFileExtensions)
         {
             if (imageFile == null)
             {
                 throw new ArgumentNullException(nameof(imageFile));
             }
+     
 
             var wwwRootPath = environment.WebRootPath;
             var path = Path.Combine(wwwRootPath, "Uploads");
@@ -30,13 +36,17 @@ namespace Image_manupulation.Data.Services
                 Directory.CreateDirectory(path);
             }
 
+
+
+
             var ext = Path.GetExtension(imageFile.FileName);
             if (!allowedFileExtensions.Contains(ext))
             {
                 throw new ArgumentException($"Only {string.Join(",", allowedFileExtensions)} are allowed.");
             }
-
-            var fileName = $"{DateTime.Now:dd-MM-yyy_HH-mm}_{Guid.NewGuid()}{ext}";
+            //2793
+        
+            var fileName = $"{DateTime.Now:dd-MM-yyy_}_{Guid.NewGuid()}{ext}";
             var fileNameWithPath = Path.Combine(path, fileName);
             using var stream = new FileStream(fileNameWithPath, FileMode.Create);
             await imageFile.CopyToAsync(stream);
